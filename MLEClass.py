@@ -57,6 +57,7 @@ class MaximumLikelihoodMethod():
         self.collapseRate = collapseRate #mean annual frequency of collapse (\lambda_c)
         
         self.GLMmodel = GLMProbitClass(hazardLevel, collpaseCount, numGM, collapseRate, varType='nonrobust')
+        self.GLMmodel_Sandwich = GLMProbitClass(hazardLevel, collpaseCount, numGM, collapseRate, varType='expectedHessian')
         
         
         self.IMrange = np.linspace(0.01, int(max(self.hazardLevel)) + 1, 500)
@@ -390,7 +391,7 @@ class MaximumLikelihoodMethod():
         '''
         
         if qmleTag:
-            covMat = self.GLMmodel.sandwich
+            covMat = np.array(self.GLMmodel_Sandwich.vcov)
         else:
             covMat = np.array(self.GLMmodel.vcov)
             
