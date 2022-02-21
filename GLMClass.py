@@ -8,7 +8,7 @@ Developed by: Laxman Dahal, UCLA
 Created on: Feb 2021 
 
 Relevant Publication to cite
-
+Dahal, L., Burton, H., & Onyambu, S. (2022). Quantifying the effect of probability model misspecification in seismic collapse risk assessment. Structural Safety, 96, 102185.
 """
 
 __author__ = "Laxman Dahal"
@@ -222,45 +222,7 @@ class GLMProbitClass():
         return 1 - np.exp(-numYear * self.meanLambdaCollapse)
     
     
-#     def simulatedCollapseRate(self, vcov, numSamples, period):
-#     '''
-#       Monte Carlo Simulation with just the mean estimates and the variance of the mean estimate. Doesn't account for the 
-#       covariance terms. 
-#      '''
-        
-#         def computeCollapseRate(beta0, beta1, period):
-        
-#             interpolationFunc = CubicSpline(np.exp(self.logIM), self.collapseRate)
-#             lambdaRange = interpolationFunc(self.IMrange)
 
-#             lambdaCollapse_temp = []
-
-#             for i in range(len(self.IMrange)-1):
-
-#                 midIM = (self.IMrange[i] + self.IMrange[i+1]) / 2
-
-#                 pc_temp = norm.cdf(beta0 + beta1 * np.log(midIM))
-#                 lamC = pc_temp * np.abs(lambdaRange[i] - lambdaRange[i+1]) 
-
-#                 lambdaCollapse_temp.append(lamC)
-
-
-#             meanLambdaCollapse = np.sum(lambdaCollapse_temp)
-#             probCollapseGivenYears = 1 - np.exp(-meanLambdaCollapse*period)
-#             return meanLambdaCollapse, probCollapseGivenYears        
-#         lambdaCollapsehist = []
-#         samplePc_hist = []
-#         np.random.seed(42)
-#         sampleBeta0 = np.random.normal(self.fit.params[0], np.sqrt(vcov['Intercept'][0]), size = numSamples)
-#         sampleBeta1 = np.random.normal(self.fit.params[1], np.sqrt(vcov['logIM'][1]), size = numSamples)
-        
-#         for i in range(len(sampleBeta0)):
-#             simlambda_c, simProbCol_yrs = computeCollapseRate(sampleBeta0[i], sampleBeta1[i], period)
-            
-#             lambdaCollapsehist.append(simlambda_c)
-#             samplePc_hist.append(simProbCol_yrs)
-            
-#         return lambdaCollapsehist, samplePc_hist
     
     def simulatedCollapseRateCov(self, vcov, numSamples=500, period=50, seed = 42, resamplingFlag = False):
         '''
